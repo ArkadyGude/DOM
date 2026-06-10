@@ -2,6 +2,7 @@ import Game from "./app";
 
 describe("Game", () => {
   let container;
+  let gameInstance;
 
   beforeEach(() => {
     container = document.createElement("div");
@@ -11,12 +12,15 @@ describe("Game", () => {
   });
 
   afterEach(() => {
+    if (gameInstance && typeof gameInstance.destroy === "function") {
+      gameInstance.destroy();
+    }
     document.body.innerHTML = "";
     jest.useRealTimers();
   });
 
   test("должен создать игровое поле 4x4 и поместить гоблина", () => {
-    new Game();
+    gameInstance = new Game();
     const cells = document.querySelectorAll(".cell");
     expect(cells.length).toBe(16);
     const goblin = document.querySelector(".goblin");
@@ -27,7 +31,7 @@ describe("Game", () => {
   });
 
   test("гоблин перемещается в другую ячейку при вызове таймера", () => {
-    new Game();
+    gameInstance = new Game();
     const goblin = document.querySelector(".goblin");
     const initialParent = goblin.parentElement;
 
